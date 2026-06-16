@@ -36,7 +36,10 @@ const AIMatchModal = ({ item, onClose, onViewItem }) => {
             const res = await API.get(`/items/${item.id}/matches`);
             setMatches(res.data.matches || []);
         } catch (err) {
-            setError(err.response?.data?.error || "Failed to find matches. Please try again.");
+            const status = err.response?.status;
+            const serverMsg = err.response?.data?.error;
+            const netMsg = err.message;
+            setError(serverMsg || `Error ${status || 'network'}: ${netMsg}`);
         }
         setLoading(false);
     };
