@@ -11,23 +11,8 @@ const PORT = process.env.PORT || 5000
 // --------------------------------------------------
 // Middleware
 // --------------------------------------------------
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'http://127.0.0.1:5173',
-    process.env.FRONTEND_URL,          // e.g. https://your-app.vercel.app
-].filter(Boolean).map(o => o.replace(/\/$/, '')); // strip trailing slashes
+app.use(cors())  // Allow all origins — auth is handled client-side via Supabase JS
 
-app.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, Postman, curl)
-        if (!origin) return callback(null, true);
-        const clean = origin.replace(/\/$/, '');
-        if (allowedOrigins.includes(clean)) return callback(null, true);
-        return callback(new Error(`CORS: origin ${origin} not allowed`));
-    },
-    credentials: true,
-}))
 app.use(express.json())
 
 // --------------------------------------------------
